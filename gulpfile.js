@@ -1,13 +1,11 @@
-let gulp = require('gulp');
-let sass = require('gulp-sass');
-let autoprefixer = require('gulp-autoprefixer');
-let browserSync = require('browser-sync').create();
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync').create();
 
 gulp.task('default', function() {
   gulp.watch('scss/**/*.scss', gulp.series('styles'));
 });
-
-
 
 gulp.task('styles', function() {
   return gulp.src('scss/**/*.scss')
