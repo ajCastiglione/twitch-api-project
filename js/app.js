@@ -10,12 +10,14 @@
   //initializing the search query
   btn.on('click', evt => {
     evt.preventDefault();
+    if (searchTerm.val() == "") return alert('You must enter a video game name.');
     btn.html('Loading...');
     getGameId();
   });
   searchTerm.on('keypress', evt => {
     let keyCode = evt.which || evt.keyCode;
     if (keyCode === 13) {
+      if (searchTerm.val() == "") return alert('You must enter a video game name.');
       btn.html('Loading...');
       getGameId();
     }
