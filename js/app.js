@@ -1,4 +1,4 @@
-(function() {
+$(function() {
   const storage = window.localStorage;
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
@@ -117,5 +117,4 @@
   }); //end of twitch embed function
 
   //TODO: Figure out a better layout for the results. Make a better display for the video location. Ideally will have selections appear in a row directly under the search bar and the video will appear under the suggestions. Still have to implement a clear feature once another request is made so the old results disappear. Will need to make some sort of check to see how many videos are currently being displayed and a way for the user to remove a stream they dont want to view. Utilize local storage in a way that allows for previous searches for convenience. Possibly a simple array containing past searches that can be toggled in and out of view with a title saying "click here for previous searches" or some shit like that.
-
-})();
+});
