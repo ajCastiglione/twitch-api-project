@@ -5,6 +5,7 @@ $(function() {
   const streamSelect = $("#stream-selection");
   const btn = $("#subUser");
   let searchTerm = $("#searchTerm");
+  let streamerData = [];
 
   //initializing the search query
   btn.on('click', evt => {
@@ -63,34 +64,27 @@ $(function() {
           let name = getUserNameFromId(id);
           name.then(ans => {
               displayName = ans.data[0].display_name;
-              let content = $(`
-                <div class="single-stream">
-                <img class="stream-thumbnail" src=${tb}>
-                <p class="single-stream-content">
-                <h3 id="${id}">${displayName}</h3>
-                is playing <span class="search-term">${searchTerm.val()}</span> for ${viewCount} viewers.
-                </p>
-                </div>
-              `);
-              streamSelect.append(content);
+              streamerData.push({
+                name: displayName,
+                thumb: tb,
+                views: viewCount,
+                userID: id
+              });
             })
             .catch(error => {
-              if (error) return streamSelect.empty().html(`Error retrieving content, please try your search again.`);
+              if (error) return streamSelect.empty().html(`Error retrieving content, please try your search again. Please wait 1 minute before retrying this.`);
             });
         } // end of for...of loop
-        addSlider();
-      } // end of success function
-    });
 
+      }, // end of success function
+      complete: function() {
+        setTimeout(function() {
+          displayContent();
+        }, 1200);
+      }
+    }); // end ajax
     btn.html('Search');
   } //end of getStreams
-
-  function addSlider() {
-    $(".slick-slide").slick({
-      infinite: true,
-      slidesToShow: 8
-    });
-  }
 
   //use streamer id to find streamer username - https://api.twitch.tv/helix/users?id=${queried game user id}
   function getUserNameFromId(userId) {
@@ -100,6 +94,27 @@ $(function() {
       beforeSend: xhr => xhr.setRequestHeader('Client-ID', id)
     })); //have to use ES6 promises to return the success data back to the for of loop.
   } // end of getUserNameFromId
+
+  function displayContent() {
+    for (let streamer of streamerData) {
+      let content = $(`
+        <div class="single-stream">
+        <img class="stream-thumbnail" src=${streamer.thumb}>
+        <p class="single-stream-content">
+        <h3 class="single-stream-title" id="${streamer.userID}">${streamer.name}</h3>
+        is playing <span class="search-term">${searchTerm.val()}</span> for ${streamer.views} viewers.
+        </p>
+        </div>
+      `);
+      streamSelect.append(content);
+    } //end of for of loop
+
+    $('.slick-slide').slick({
+      infinite: true,
+      slidesToShow: 5
+    });
+
+  }
 
   //when a user clicks on the thumbnail, have it save their username as the id of the title of the streamer so twitch embed can access their stream. - EDIT: implemented version is: while dynamically generating the content I assign the user id to their h3 tag as an ID.
 
@@ -123,4 +138,15 @@ $(function() {
 
 
   //TODO: Figure out a better layout for the results. Make a better display for the video location. Ideally will have selections appear in a row directly under the search bar and the video will appear under the suggestions. Still have to implement a clear feature once another request is made so the old results disappear. Will need to make some sort of check to see how many videos are currently being displayed and a way for the user to remove a stream they dont want to view. Utilize local storage in a way that allows for previous searches for convenience. Possibly a simple array containing past searches that can be toggled in and out of view with a title saying "click here for previous searches" or some shit like that.
+
+  /*let content = $(`
+    <div class="single-stream">
+    <img class="stream-thumbnail" src=${tb}>
+    <p class="single-stream-content">
+    <h3 id="${id}">${displayName}</h3>
+    is playing <span class="search-term">${searchTerm.val()}</span> for ${viewCount} viewers.
+    </p>
+    </div>
+  `);
+  streamSelect.append(content);*/
 });
