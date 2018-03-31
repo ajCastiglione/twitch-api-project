@@ -20,7 +20,7 @@ input section
 .input-fields {
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 
   input {
@@ -61,12 +61,12 @@ output section
   padding: 0 0.5em;
   text-align: center;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-between;
 
   .single-stream {
-    width: 25%;
+    width: 30%;
     display: inline-block;
     margin: 1em;
   }
@@ -96,7 +96,13 @@ Responsive section
       justify-content: center;
       margin: 0;
       padding: 0;
-      width: 20%;
+      width: 18.5%;
+    }
+  }
+
+  #stream-selection {
+    .single-stream {
+      width: 10%;
     }
   }
 }
