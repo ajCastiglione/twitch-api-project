@@ -2,7 +2,6 @@ $(function() {
   const storage = window.localStorage;
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
-  const vidLoc = $("#twitch-embed");
   const streamSelect = $("#stream-selection");
   const btn = $("#subUser");
   let searchTerm = $("#searchTerm");
@@ -79,10 +78,19 @@ $(function() {
               if (error) return streamSelect.empty().html(`Error retrieving content, please try your search again.`);
             });
         } // end of for...of loop
+        addSlider();
       } // end of success function
     });
+
     btn.html('Search');
   } //end of getStreams
+
+  function addSlider() {
+    $(".slick-slide").slick({
+      infinite: true,
+      slidesToShow: 8
+    });
+  }
 
   //use streamer id to find streamer username - https://api.twitch.tv/helix/users?id=${queried game user id}
   function getUserNameFromId(userId) {
@@ -93,10 +101,7 @@ $(function() {
     })); //have to use ES6 promises to return the success data back to the for of loop.
   } // end of getUserNameFromId
 
-
   //when a user clicks on the thumbnail, have it save their username as the id of the title of the streamer so twitch embed can access their stream. - EDIT: implemented version is: while dynamically generating the content I assign the user id to their h3 tag as an ID.
-
-  //TODO: Implement twitch embed and potentially make the results a slider? When a user clicks on the streamer they want to watch, run a query with the streamer's ID and fetch their channel. Has to be display name and not ID, so a query will be necessary in order to grab the stream. - COMPLETED
 
   //This will find the correct target since the element doesnt exist when the DOM is created.
   streamSelect.on('click', 'div', function() {
@@ -115,6 +120,7 @@ $(function() {
     }); //end of then function
 
   }); //end of twitch embed function
+
 
   //TODO: Figure out a better layout for the results. Make a better display for the video location. Ideally will have selections appear in a row directly under the search bar and the video will appear under the suggestions. Still have to implement a clear feature once another request is made so the old results disappear. Will need to make some sort of check to see how many videos are currently being displayed and a way for the user to remove a stream they dont want to view. Utilize local storage in a way that allows for previous searches for convenience. Possibly a simple array containing past searches that can be toggled in and out of view with a title saying "click here for previous searches" or some shit like that.
 });
