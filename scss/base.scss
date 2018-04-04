@@ -71,9 +71,8 @@ output section
 
   .single-stream {
     display: inline-block;
-    width: 300px;
-    height: auto;
-    margin: 1em;
+    width: 80%;
+    margin: 1em auto;
     padding: 1em;
     background-color: rgba(0,0,0,0.5);
     border: 2px solid #000;
@@ -115,15 +114,6 @@ Responsive section
       margin: 0;
       padding: 0;
       width: 18.5%;
-    }
-  }
-
-  #stream-selection {
-    .single-stream {
-      width: 250px;
-      max-width: 250px;
-      min-height: 0;
-      min-width: 0;
     }
   }
 }
