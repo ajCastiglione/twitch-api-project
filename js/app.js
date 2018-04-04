@@ -83,7 +83,6 @@ $(function() {
         }, 1200);
       }
     }); // end ajax
-    btn.html('Search');
   } //end of getStreams
 
   //use streamer id to find streamer username - https://api.twitch.tv/helix/users?id=${queried game user id}
@@ -96,6 +95,7 @@ $(function() {
   } // end of getUserNameFromId
 
   function displayContent() {
+    btn.html('Search');
     for (let streamer of streamerData) {
       let content = $(`
         <div class="single-stream">
@@ -109,9 +109,28 @@ $(function() {
       streamSelect.append(content);
     } //end of for of loop
 
-    $('.slick-slide').slick({
-      infinite: true,
-      slidesToShow: 5
+    $('.owl-carousel').owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      dots: false,
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 2
+        },
+        1030: {
+          items: 3
+        },
+        1240: {
+          items: 5
+        },
+        1600: {
+          items: 7
+        }
+      }
     });
 
   }
