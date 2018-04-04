@@ -4,8 +4,10 @@ $(function() {
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
   const streamSelect = $("#stream-selection");
   const btn = $("#subUser");
-  let searchTerm = $("#searchTerm");
-  let streamerData = [];
+  let searchTerm = $("#searchTerm"),
+    twitchEmbed = $("#twitch-embed");
+  let streamerData = [],
+    vidCount = 0;
 
   //initializing the search query
   btn.on('click', evt => {
@@ -80,6 +82,7 @@ $(function() {
       complete: function() {
         setTimeout(function() {
           displayContent();
+          localStorage.streamPeople = JSON.stringify(streamerData);
         }, 1200);
       }
     }); // end ajax
@@ -94,10 +97,28 @@ $(function() {
     })); //have to use ES6 promises to return the success data back to the for of loop.
   } // end of getUserNameFromId
 
-  function displayContent() {
+  function displayContent(savedStreamersArr) {
     btn.html('Search');
-    for (let streamer of streamerData) {
-      let content = $(`
+
+    if (savedStreamersArr) {
+      savedStreamersArr = savedStreamersArr.sort((a, b) => b.views - a.views);
+      for (let streamer of savedStreamersArr) {
+        let content = $(`
+          <div class="single-stream">
+          <img class="stream-thumbnail" src=${streamer.thumb}>
+          <p class="single-stream-content">
+          <h3 class="single-stream-title" id="${streamer.userID}">${streamer.name}</h3>
+          is playing <span class="search-term">${searchTerm.val()}</span> for ${streamer.views} viewers.
+          </p>
+          </div>
+        `);
+        streamSelect.append(content);
+      } //end of for of loop
+    } else {
+
+      streamerData = streamerData.sort((a, b) => b.views - a.views);
+      for (let streamer of streamerData) {
+        let content = $(`
         <div class="single-stream">
         <img class="stream-thumbnail" src=${streamer.thumb}>
         <p class="single-stream-content">
@@ -106,14 +127,17 @@ $(function() {
         </p>
         </div>
       `);
-      streamSelect.append(content);
-    } //end of for of loop
+        streamSelect.append(content);
+      } //end of for of loop
+
+    }
 
     $('.owl-carousel').owlCarousel({
       loop: true,
       margin: 10,
       nav: true,
       dots: false,
+      mouseDrag: false,
       responsive: {
         0: {
           items: 1
@@ -138,13 +162,17 @@ $(function() {
   //when a user clicks on the thumbnail, have it save their username as the id of the title of the streamer so twitch embed can access their stream. - EDIT: implemented version is: while dynamically generating the content I assign the user id to their h3 tag as an ID.
 
   //This will find the correct target since the element doesnt exist when the DOM is created.
-  streamSelect.on('click', 'div', function() {
+  streamSelect.on('click', '.single-stream', function() {
     let ID = $(this).find('h3').attr('id');
     let name = getUserNameFromId(ID);
+    let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
+    let closeVid = $(`<div class="close-video">X</div>`);
+    twitchEmbed.append(vidSpot);
+    vidSpot.append(closeVid);
 
     name.then(ans => {
       let userName = ans.data[0].display_name;
-      new Twitch.Embed("twitch-embed", {
+      new Twitch.Embed("live-stream", {
         width: "100%",
         height: "100%",
         chat: "default",
@@ -152,20 +180,22 @@ $(function() {
         channel: userName
       }); //end twitch embed
     }); //end of then function
-
+    vidCount++;
   }); //end of twitch embed function
 
+  //Setting up local storage to save the streamer array
+  if (localStorage.streamPeople) {
+    let savedStreamersArr = JSON.parse(localStorage.streamPeople);
+    displayContent(savedStreamersArr);
+  }
+
+  // Removing videos
+  twitchEmbed.on("click", ".close-video", function() {
+    let parentVideo = $(this).parent();
+    console.log(parentVideo);
+    parentVideo.remove();
+  });
 
   //TODO: Figure out a better layout for the results. Make a better display for the video location. Ideally will have selections appear in a row directly under the search bar and the video will appear under the suggestions. Still have to implement a clear feature once another request is made so the old results disappear. Will need to make some sort of check to see how many videos are currently being displayed and a way for the user to remove a stream they dont want to view. Utilize local storage in a way that allows for previous searches for convenience. Possibly a simple array containing past searches that can be toggled in and out of view with a title saying "click here for previous searches" or some shit like that.
 
-  /*let content = $(`
-    <div class="single-stream">
-    <img class="stream-thumbnail" src=${tb}>
-    <p class="single-stream-content">
-    <h3 id="${id}">${displayName}</h3>
-    is playing <span class="search-term">${searchTerm.val()}</span> for ${viewCount} viewers.
-    </p>
-    </div>
-  `);
-  streamSelect.append(content);*/
 });
