@@ -14,7 +14,8 @@
   <script src="https://embed.twitch.tv/embed/v1.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.3/owl.carousel.min.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/gameSearch.js"></script>
+  <script src="js/streamerSearch.js"></script>
 </head>
 
 <body>
@@ -23,14 +24,23 @@
 
     <header>
       <div class="page-title">
-        <h1>Local Storage + Twitch API</h1>
+        <h1>Twitch API</h1>
       </div>
     </header>
 
     <article class="input-container">
-      <div class="input-fields">
+
+      <a href="#" class="streamerSelect" id="showStreamerFields">Search by Streamer</a>
+      <a href="#" class="gameSelect" id="showGameFields">Search by Games</a>
+
+      <div class="gameSearch-fields">
         <input id="searchTerm" type="text" class="form-control">
-        <a href="#" id="subUser">Search</a>
+        <a class="searchBtn" href="#" id="subUser">Search</a>
+      </div>
+
+      <div class="streamSearch-fields">
+        <input id="searchTerm" type="text" class="form-control">
+        <a class="searchBtn" href="#" id="subUser">Search</a>
       </div>
     </article>
 
