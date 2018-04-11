@@ -8,6 +8,9 @@ $(function() {
     twitchEmbed = $("#twitch-embed");
   let streamerData = [],
     vidCount = 0;
+  const slider = $('.owl-carousel');
+  let gameField = $('.gameSearch-fields'); gameField.hide();
+  let streamerField = $(".streamSearch-fields"); streamerField.hide();
 
   //initializing the search query
   btn.on('click', evt => {
@@ -36,6 +39,7 @@ $(function() {
       data: 'JSON',
       beforeSend: xhr => xhr.setRequestHeader('Client-ID', id),
       success: response => {
+        if (!response.data[0].id) return "Invalid game title, please try your search again.";
         gameId = response.data[0].id;
         getStreams(gameId, term);
       },
@@ -62,6 +66,7 @@ $(function() {
         for (let streams of availStreams) {
           let id = streams.user_id;
           let tb = streams.thumbnail_url.replace(/{width}/gi, "500").replace(/{height}/gi, "500");
+          if (!tb) tb = 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png';
           let viewCount = streams.viewer_count;
           let name = getUserNameFromId(id);
           name.then(ans => {
@@ -74,7 +79,7 @@ $(function() {
               });
             })
             .catch(error => {
-              if (error) return streamSelect.empty().html(`Error retrieving content, please try your search again. Please wait 1 minute before retrying this.`);
+              if (error) return streamSelect.empty().html(`Error retrieving content, please try your search again after 1 minute has passed - due to query limitations.`);
             });
         } // end of for...of loop
 
@@ -99,7 +104,7 @@ $(function() {
 
   function displayContent(savedStreamersArr) {
     btn.html('Search');
-
+    streamSelect.empty();
     if (savedStreamersArr) {
       savedStreamersArr = savedStreamersArr.sort((a, b) => b.views - a.views);
       for (let streamer of savedStreamersArr) {
@@ -114,8 +119,9 @@ $(function() {
         `);
         streamSelect.append(content);
       } //end of for of loop
+      putItInaSlider();
     } else {
-
+      slider.owlCarousel('destroy');
       streamerData = streamerData.sort((a, b) => b.views - a.views);
       for (let streamer of streamerData) {
         let content = $(`
@@ -129,10 +135,13 @@ $(function() {
       `);
         streamSelect.append(content);
       } //end of for of loop
-
+      putItInaSlider();
     }
 
-    $('.owl-carousel').owlCarousel({
+  } //end of display content
+
+  function putItInaSlider() {
+    slider.owlCarousel({
       loop: true,
       margin: 10,
       nav: true,
@@ -152,14 +161,11 @@ $(function() {
           items: 5
         },
         1600: {
-          items: 7
+          items: 6
         }
       }
     });
-
   }
-
-  //when a user clicks on the thumbnail, have it save their username as the id of the title of the streamer so twitch embed can access their stream. - EDIT: implemented version is: while dynamically generating the content I assign the user id to their h3 tag as an ID.
 
   //This will find the correct target since the element doesnt exist when the DOM is created.
   streamSelect.on('click', '.single-stream', function() {
@@ -192,10 +198,14 @@ $(function() {
   // Removing videos
   twitchEmbed.on("click", ".close-video", function() {
     let parentVideo = $(this).parent();
-    console.log(parentVideo);
     parentVideo.remove();
   });
 
-  //TODO: Figure out a better layout for the results. Make a better display for the video location. Ideally will have selections appear in a row directly under the search bar and the video will appear under the suggestions. Still have to implement a clear feature once another request is made so the old results disappear. Will need to make some sort of check to see how many videos are currently being displayed and a way for the user to remove a stream they dont want to view. Utilize local storage in a way that allows for previous searches for convenience. Possibly a simple array containing past searches that can be toggled in and out of view with a title saying "click here for previous searches" or some shit like that.
+  // Btn to show game search field
+  $("#showGameFields").on('click', function() {
+    gameField.fadeToggle(600);
+  });
+
+  //TODO: Fix the layout of this app. Add a search based on a streamer's name to find what they're playing etc... Add a way to view multiple streams in a responsive grid layout.
 
 });
