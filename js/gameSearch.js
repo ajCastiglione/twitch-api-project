@@ -3,8 +3,8 @@ $(function() {
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
   const streamSelect = $("#stream-selection");
-  const btn = $("#subUser");
-  let searchTerm = $("#searchTerm"),
+  const btn = $("#subGame");
+  let searchTerm = $("#gameSearchTerm"),
     twitchEmbed = $("#twitch-embed");
   let streamerData = [],
     vidCount = 0;
@@ -203,9 +203,12 @@ $(function() {
 
   // Btn to show game search field
   $("#showGameFields").on('click', function() {
+    streamerField.hide();
     gameField.fadeToggle(600);
   });
 
-  //TODO: Fix the layout of this app. Add a search based on a streamer's name to find what they're playing etc... Add a way to view multiple streams in a responsive grid layout.
-
+  /*TODO: Fix the layout of this app. Add a search based on a streamer's name to find what
+  they're playing etc... Add a way to view multiple streams in a responsive grid layout.
+  Begin to program the streamer search functionality.
+  */
 });
