@@ -3,27 +3,32 @@ $(function() {
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
   const streamSelect = $("#stream-selection");
-  const btn = $("#subGame");
+  const gameBtn = $("#subGame");
+  const userBtn = $("#subUser");
   let searchTerm = $("#gameSearchTerm"),
-    twitchEmbed = $("#twitch-embed");
+    twitchEmbed = $("#twitch-embed"),
+    userSearchTerm = $("#userSearchTerm");
   let streamerData = [],
+    userData = [],
     vidCount = 0;
   const slider = $('.owl-carousel');
-  let gameField = $('.gameSearch-fields'); gameField.hide();
-  let streamerField = $(".streamSearch-fields"); streamerField.hide();
+  let gameField = $('.gameSearch-fields');
+  gameField.hide();
+  let streamerField = $(".streamSearch-fields");
+  streamerField.hide();
 
   //initializing the search query
-  btn.on('click', evt => {
+  gameBtn.on('click', evt => {
     evt.preventDefault();
     if (searchTerm.val() == "") return alert('You must enter a video game name.');
-    btn.html('Loading...');
+    gameBtn.html('Loading...');
     getGameId();
   });
   searchTerm.on('keypress', evt => {
     let keyCode = evt.which || evt.keyCode;
     if (keyCode === 13) {
       if (searchTerm.val() == "") return alert('You must enter a video game name.');
-      btn.html('Loading...');
+      gameBtn.html('Loading...');
       getGameId();
     }
   });
@@ -103,7 +108,7 @@ $(function() {
   } // end of getUserNameFromId
 
   function displayContent(savedStreamersArr) {
-    btn.html('Search');
+    gameBtn.html('Search');
     streamSelect.empty();
     if (savedStreamersArr) {
       savedStreamersArr = savedStreamersArr.sort((a, b) => b.views - a.views);
@@ -209,24 +214,24 @@ $(function() {
 
   /*=====================================Streamer Search Section==================================================*/
 
-  btn.on('click', evt => {
+  userBtn.on('click', evt => {
     evt.preventDefault();
-    if (searchTerm.val() == "") return alert(`You must enter a user's name.`);
-    btn.html('Loading...');
+    if (userSearchTerm.val() == "") return alert(`You must enter a user's name.`);
+    userBtn.html('Loading...');
     getStreamerData();
   });
-  searchTerm.on('keypress', evt => {
+  userSearchTerm.on('keypress', evt => {
     let keyCode = evt.which || evt.keyCode;
     if (keyCode === 13) {
-      if (searchTerm.val() == "") return alert(`You must enter a user's name.`);
-      btn.html('Loading...');
+      if (userSearchTerm.val() == "") return alert(`You must enter a user's name.`);
+      userBtn.html('Loading...');
       getStreamerData();
     }
   });
 
-  //get username of streamer then - run GET https://api.twitch.tv/helix/streams?user_login
+  //get username of streamer then - run GET https://api.twitch.tv/helix/streams?user_login=
   function getStreamerData() {
-    let term = searchTerm.val();
+    let term = userSearchTerm.val();
     let query = `${api}streams?user_login=${term}`;
     $.ajax({
       url: query,
@@ -234,9 +239,49 @@ $(function() {
       data: 'JSON',
       beforeSend: xhr => xhr.setRequestHeader('Client-ID', id),
       success: response => {
-console.log(response.data)
+        let ans = response.data[0];
+        userData.push({
+          name: term,
+          image: ans.thumbnail_url.replace(/{width}/gi, 500).replace(/{height}/gi, 500),
+          online: ans.type,
+          views: ans.viewer_count
+        });
+        getGameFromId(ans.game_id);
       }
     }); //end ajax
+  }
+
+  //Once I have the game ID run another query to get the name of the game - https://api.twitch.tv/helix/games?id=
+  function getGameFromId(ID) {
+    let term = ID;
+    let query = `${api}games?id=${term}`;
+    $.ajax({
+      url: query,
+      type: 'GET',
+      data: 'JSON',
+      beforeSend: xhr => xhr.setRequestHeader('Client-ID', id),
+      success: response => {
+        let game = response.data[0].name;
+        userData[0].game = game;
+        displayUserContent();
+      }
+    });
+  }
+
+  function displayUserContent() {
+    userBtn.html("Search");
+    streamSelect.empty();
+    let user = userData[0];
+    let content = $(`
+      <div class="single-stream">
+      <img class="stream-thumbnail" src="${user.image}">
+      <p class="single-stream-content">
+      <h3 class="single-stream-title">${user.name}</h3>
+      is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
+      </p>
+      </div>
+      `);
+      streamSelect.append(content);
   }
 
 
@@ -247,6 +292,6 @@ console.log(response.data)
 
   /*TODO: Fix the layout of this app. Add a search based on a streamer's name to find what
   they're playing etc... Add a way to view multiple streams in a responsive grid layout.
-  Begin to program the streamer search functionality.
+  Beginning to program the streamer search functionality.
   */
 });
