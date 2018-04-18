@@ -18,22 +18,28 @@ $(function () {
   streamerField.hide();
 
   //initializing the search query
-  gameBtn.on('click', evt => {
-    evt.preventDefault();
-    streamerData = [];
-    if (searchTerm.val() == "") return alert('You must enter a video game name.');
-    gameBtn.html('Loading...');
-    getGameId();
-  });
-  searchTerm.on('keypress', evt => {
-    let keyCode = evt.which || evt.keyCode;
-    streamerData = [];
-    if (keyCode === 13) {
+  gameBtn.on('click', initSearch);
+  searchTerm.on('keypress', initSearch);
+
+  function initSearch(evt) {
+    if (evt.type == "click") {
+      evt.preventDefault();
+      streamerData = [];
       if (searchTerm.val() == "") return alert('You must enter a video game name.');
       gameBtn.html('Loading...');
+      gameBtn.off('click');
       getGameId();
+    } else {
+      let keyCode = evt.which || evt.keyCode;
+      streamerData = [];
+      if (keyCode === 13) {
+        if (searchTerm.val() == "") return alert('You must enter a video game name.');
+        gameBtn.html('Loading...');
+        searchTerm.off('keypress');
+        getGameId();
+      }
     }
-  });
+  }
 
   //Use query term (name of game) to find game id of searched game - https://api.twitch.tv/helix/games?name=${query term}
   function getGameId() {
@@ -46,13 +52,13 @@ $(function () {
       data: 'JSON',
       beforeSend: xhr => xhr.setRequestHeader('Client-ID', id),
       success: response => {
-        if (!response.data[0].id) return "Invalid game title, please try your search again.";
+        console.log(response);
+        if (response.data.length === 0) return alert("Invalid game title, please try your search again."); gameBtn.html('Search');
         gameId = response.data[0].id;
         getStreams(gameId, term);
       },
       error: (xhr, status, abort) => {
-        streamSelect.html('Retrying query...');
-        getGameId();
+        streamSelect.html('Too many queries, please wait 1 minute before trying again due to limitations...');
       }
     });
   } //end of getGameId
@@ -143,6 +149,8 @@ $(function () {
         streamSelect.append(content);
       } //end of for of loop
       putItInaSlider();
+      gameBtn.on('click', initSearch);
+      searchTerm.on('keypress', initSearch);
     }
 
   } //end of display content
@@ -178,22 +186,23 @@ $(function () {
   streamSelect.on('click', '.single-stream', function () {
     let ID = $(this).find('h3').attr('id');
     let name = getUserNameFromId(ID);
-    let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
+    let vidSpot = $(`<div id="live-stream-${vidCount}" class="streamNum-${vidCount} twitch-liveStream"></div>`);
     let closeVid = $(`<div class="close-video">X</div>`);
     twitchEmbed.append(vidSpot);
     vidSpot.append(closeVid);
 
     name.then(ans => {
       let userName = ans.data[0].display_name;
-      new Twitch.Embed("live-stream", {
+      new Twitch.Embed(`live-stream-${vidCount}`, {
         width: "100%",
         height: "100%",
         chat: "default",
         layout: "video",
         channel: userName
       }); //end twitch embed
+      vidCount++;
     }); //end of then function
-    vidCount++;
+
   }); //end of twitch embed function
 
   //Setting up local storage to save the streamer array
@@ -312,10 +321,11 @@ $(function () {
   });
 
   /*
-  TODO: Fix the layout of this app. 
+  TODO: 
+  Fix the layout of this app. 
   Add a way to view multiple streams in a responsive grid layout.
-  When a user is clicked, implement the video embed function used on the game search.
-  Add functionality to streamer select to display their livestream if their preview is clicked on.
+  When a user is clicked, implement the video embed function used on the game search. - Added
+
   Bug testing: 
   1. Make sure mulitple requests cannot be spammed while loading results
   2. Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.
