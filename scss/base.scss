@@ -7,6 +7,7 @@ $purp: #6441a4;
 $lightpurp: #d98ee5; 
 $white: #fff;
 $black: #000;
+$bgColor: #d8d8d8;
 /*********************
 Global section
 *********************/
@@ -14,6 +15,7 @@ Global section
 body,
 html {
   font-family: $arimo;
+  background-color: $bgColor;
 }
 
 .container {
