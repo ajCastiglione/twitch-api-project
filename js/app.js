@@ -212,7 +212,7 @@ $(function () {
     gameField.fadeToggle(600);
   });
 
-  /*=====================================Streamer Search Section==================================================*/
+  /*===================================== Streamer Search Section ==================================================*/
 
   userBtn.on('click', evt => {
     evt.preventDefault();
@@ -249,7 +249,7 @@ $(function () {
         getGameFromId(ans.game_id);
       }
     }); //end ajax
-  }
+  } // end getStreamerData 
 
   //Once I have the game ID run another query to get the name of the game - https://api.twitch.tv/helix/games?id=
   function getGameFromId(ID) {
@@ -266,23 +266,40 @@ $(function () {
         displayUserContent();
       }
     });
-  }
+  } // end getGameFromId
 
   function displayUserContent() {
     userBtn.html("Search");
     streamSelect.empty();
     let user = userData[0];
     let content = $(`
-      <div class="single-stream">
+      <div class="single-user-stream">
       <img class="stream-thumbnail" src="${user.image}">
       <p class="single-stream-content">
-      <h3 class="single-stream-title">${user.name}</h3>
+      <h3 id="${user.name}" class="single-stream-title">${user.name}</h3>
       is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
       </p>
       </div>
       `);
     streamSelect.append(content);
-  }
+  } //end of displayUserContent
+
+  streamSelect.on('click', '.single-user-stream', function () {
+    let name = $(this).find('h3').attr('id');
+    let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
+    let closeVid = $(`<div class="close-video">X</div>`);
+    twitchEmbed.append(vidSpot);
+    vidSpot.append(closeVid);
+
+      new Twitch.Embed("live-stream", {
+        width: "100%",
+        height: "100%",
+        chat: "default",
+        layout: "video",
+        channel: name
+      }); //end twitch embed
+    vidCount++;
+  }); //end of twitch embed function
 
 
   $("#showStreamerFields").on('click', function () {
