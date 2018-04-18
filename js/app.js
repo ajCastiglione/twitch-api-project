@@ -206,6 +206,7 @@ $(function () {
   twitchEmbed.on("click", ".close-video", function () {
     let parentVideo = $(this).parent();
     parentVideo.remove();
+    vidCount -= 1;
   });
 
   // Btn to show game search field
@@ -276,28 +277,12 @@ $(function () {
     slider.owlCarousel('destroy');
     let user = userData[0];
     let content = $(`
-<<<<<<< HEAD
-      <div class="single-user">
-        <img class="user-thumbnail" src="${user.image}">
-        <div class="single-user-content">
-        <h3 class="single-user-title">${user.name}</h3>
-        is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
-        </div>
-||||||| merged common ancestors
-      <div class="single-stream">
-      <img class="stream-thumbnail" src="${user.image}">
-      <p class="single-stream-content">
-      <h3 class="single-stream-title">${user.name}</h3>
-      is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
-      </p>
-=======
       <div class="single-user-stream">
       <img class="stream-thumbnail" src="${user.image}">
       <p class="single-stream-content">
       <h3 id="${user.name}" class="single-stream-title">${user.name}</h3>
       is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
       </p>
->>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
       </div>
       `);
     streamSelect.append(content);
@@ -310,13 +295,13 @@ $(function () {
     twitchEmbed.append(vidSpot);
     vidSpot.append(closeVid);
 
-      new Twitch.Embed("live-stream", {
-        width: "100%",
-        height: "100%",
-        chat: "default",
-        layout: "video",
-        channel: name
-      }); //end twitch embed
+    new Twitch.Embed("live-stream", {
+      width: "100%",
+      height: "100%",
+      chat: "default",
+      layout: "video",
+      channel: name
+    }); //end twitch embed
     vidCount++;
   }); //end of twitch embed function
 
