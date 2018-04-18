@@ -29,6 +29,7 @@ $(function () {
       gameBtn.html('Loading...');
       gameBtn.off('click');
       getGameId();
+      searchTerm.val('');
     } else {
       let keyCode = evt.which || evt.keyCode;
       streamerData = [];
@@ -37,6 +38,7 @@ $(function () {
         gameBtn.html('Loading...');
         searchTerm.off('keypress');
         getGameId();
+        searchTerm.val('');
       }
     }
   }
@@ -203,6 +205,9 @@ $(function () {
         channel: userName
       }); //end twitch embed
       vidCount++;
+      if( $(".twitch-liveStream").hasClass('streamNum-1') ) {
+        $('.twitch-liveStream').css({'display': 'inline-block', 'width' : '47%', 'margin' : '1%'});
+      } 
     }); //end of then function
 
   }); //end of twitch embed function
@@ -218,6 +223,9 @@ $(function () {
     let parentVideo = $(this).parent();
     parentVideo.remove();
     vidCount -= 1;
+    if($(".twitch-liveStream").hasClass('streamNum-0') && $(".twitch-liveStream").hasClass('streamNum-1') === false ) {
+      $(".twitch-liveStream").css({'width':'100%'});
+    }
   });
 
   // Btn to show game search field
