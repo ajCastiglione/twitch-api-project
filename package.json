@@ -1,5 +1,5 @@
 {
-  "name": "projects",
+  "name": "twitch-api",
   "version": "1.0.0",
   "description": "Twitch API integration",
   "main": "app.js",
