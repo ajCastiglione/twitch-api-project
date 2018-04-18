@@ -35,8 +35,9 @@ Fix the layout of this app:
   Bug testing: 
 
 <ol>
-  <li>Make sure mulitple requests cannot be spammed while loading results</li>
+  <li>Make sure mulitple requests cannot be spammed while loading results for game search - Implemented</li>
   <li>Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.</li>
   <li>When displaying the video make sure theres a default or error message if for some reason the video cannot be loaded.</li>
   <li>Handle unrecognized names / incorrect game titles and return an error describing the problem to the user.</li>
+  <li>Make sure mulitple requests cannot be spammed while loading results for user search</li>
 </ol>
