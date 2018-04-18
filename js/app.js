@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   const storage = window.localStorage;
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
@@ -91,8 +91,8 @@ $(function() {
         } // end of for...of loop
 
       }, // end of success function
-      complete: function() {
-        setTimeout(function() {
+      complete: function () {
+        setTimeout(function () {
           displayContent();
           localStorage.streamPeople = JSON.stringify(streamerData);
         }, 1200);
@@ -175,7 +175,7 @@ $(function() {
   }
 
   //This will find the correct target since the element doesnt exist when the DOM is created.
-  streamSelect.on('click', '.single-stream', function() {
+  streamSelect.on('click', '.single-stream', function () {
     let ID = $(this).find('h3').attr('id');
     let name = getUserNameFromId(ID);
     let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
@@ -203,18 +203,18 @@ $(function() {
   }
 
   // Removing videos
-  twitchEmbed.on("click", ".close-video", function() {
+  twitchEmbed.on("click", ".close-video", function () {
     let parentVideo = $(this).parent();
     parentVideo.remove();
   });
 
   // Btn to show game search field
-  $("#showGameFields").on('click', function() {
+  $("#showGameFields").on('click', function () {
     streamerField.hide();
     gameField.fadeToggle(600);
   });
 
-  /*=====================================Streamer Search Section==================================================*/
+  /*===================================== Streamer Search Section ==================================================*/
 
   userBtn.on('click', evt => {
     evt.preventDefault();
@@ -251,7 +251,7 @@ $(function() {
         getGameFromId(ans.game_id);
       }
     }); //end ajax
-  }
+  } // end getStreamerData 
 
   //Once I have the game ID run another query to get the name of the game - https://api.twitch.tv/helix/games?id=
   function getGameFromId(ID) {
@@ -268,7 +268,7 @@ $(function() {
         displayUserContent();
       }
     });
-  }
+  } // end getGameFromId
 
   function displayUserContent() {
     userBtn.html("Search");
@@ -276,25 +276,65 @@ $(function() {
     slider.owlCarousel('destroy');
     let user = userData[0];
     let content = $(`
+<<<<<<< HEAD
       <div class="single-user">
         <img class="user-thumbnail" src="${user.image}">
         <div class="single-user-content">
         <h3 class="single-user-title">${user.name}</h3>
         is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
         </div>
+||||||| merged common ancestors
+      <div class="single-stream">
+      <img class="stream-thumbnail" src="${user.image}">
+      <p class="single-stream-content">
+      <h3 class="single-stream-title">${user.name}</h3>
+      is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
+      </p>
+=======
+      <div class="single-user-stream">
+      <img class="stream-thumbnail" src="${user.image}">
+      <p class="single-stream-content">
+      <h3 id="${user.name}" class="single-stream-title">${user.name}</h3>
+      is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
+      </p>
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
       </div>
       `);
-      streamSelect.append(content);
-  }
+    streamSelect.append(content);
+  } //end of displayUserContent
+
+  streamSelect.on('click', '.single-user-stream', function () {
+    let name = $(this).find('h3').attr('id');
+    let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
+    let closeVid = $(`<div class="close-video">X</div>`);
+    twitchEmbed.append(vidSpot);
+    vidSpot.append(closeVid);
+
+      new Twitch.Embed("live-stream", {
+        width: "100%",
+        height: "100%",
+        chat: "default",
+        layout: "video",
+        channel: name
+      }); //end twitch embed
+    vidCount++;
+  }); //end of twitch embed function
 
 
-  $("#showStreamerFields").on('click', function() {
+  $("#showStreamerFields").on('click', function () {
     gameField.hide();
     streamerField.fadeToggle(600);
   });
 
-  /*TODO: Fix the layout of this app. Add a search based on a streamer's name to find what
-  they're playing etc... Add a way to view multiple streams in a responsive grid layout.
-  Beginning to program the streamer search functionality.
+  /*
+  TODO: Fix the layout of this app. 
+  Add a way to view multiple streams in a responsive grid layout.
+  When a user is clicked, implement the video embed function used on the game search.
+  Add functionality to streamer select to display their livestream if their preview is clicked on.
+  Bug testing: 
+  1. Make sure mulitple requests cannot be spammed while loading results
+  2. Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.
+  3. When displaying the video make sure theres a default or error message if for some reason the video cannot be loaded.
+  4. Handle unrecognized names / incorrect game titles and return an error describing the problem to the user.
   */
 });

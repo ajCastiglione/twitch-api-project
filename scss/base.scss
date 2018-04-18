@@ -1,11 +1,14 @@
 /*********************
 Variables
 *********************/
-$mina: 'Mina', sans-serif;
+
+$mina: 'Mina',
+sans-serif;
 $purp: #6441a4;
 $lightpurp: #d98ee5;
 $white: #fff;
-$black: #000; /*********************
+$black: #000;
+/*********************
 Global section
 *********************/
 
@@ -17,6 +20,7 @@ html {
 .container {
   margin-top: 2em;
 }
+
 /*********************
 input section
 *********************/
@@ -38,7 +42,6 @@ input section
   border: 3px solid $lightpurp;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
-
   &:active,
   &:focus,
   &:hover {
@@ -54,11 +57,9 @@ input section
   align-items: stretch;
   justify-content: space-between;
   flex-wrap: wrap;
-
   .form-control {
     border: 2px solid $purp;
   }
-
   .searchBtn {
     display: block;
     width: 100%;
@@ -70,7 +71,6 @@ input section
     border: 2px solid $purp;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
-
     &:active,
     &:hover {
       text-decoration: none;
@@ -79,9 +79,11 @@ input section
     }
   }
 }
+
 /*********************
 output section
 *********************/
+
 .inner-output {
   width: 90%;
   margin: 1em auto;
@@ -95,8 +97,17 @@ output section
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-between;
+<<<<<<< HEAD
 
   .single-stream, .single-user {
+||||||| merged common ancestors
+
+  .single-stream {
+=======
+  
+  .single-stream,
+  .single-user-stream {
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
     display: inline-block;
     width: 100%;
     margin: 1em auto;
@@ -106,16 +117,23 @@ output section
     border-radius: 5px;
     cursor: pointer;
   }
+<<<<<<< HEAD
 
   .single-stream-title, .single-user-title {
+||||||| merged common ancestors
+
+  .single-stream-title {
+=======
+  .single-stream-title {
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
     color: $purp;
   }
-
   .stream-thumbnail {
     width: 150px;
     height: auto;
     margin: auto;
   }
+<<<<<<< HEAD
 
    .user-thumbnail {
      width: 150px;
@@ -123,10 +141,13 @@ output section
      margin: auto;
    }
 
+||||||| merged common ancestors
+
+=======
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
   .search-term {
     text-transform: capitalize;
   }
-
   p {
     margin-bottom: 0;
   }
@@ -146,20 +167,20 @@ output section
   top: 10px;
   left: 83%;
   color: $white;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   padding: 0.2em 0.6em;
   border-width: 5px;
-  border-color: rgba(255,255,255, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
   border-radius: 500px;
   font-size: 1.5em;
   z-index: 99;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-
   &:hover {
-    background-color: rgba(255,255,255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
+
 /*********************
 owl section
 **********************/
@@ -167,15 +188,16 @@ owl section
 .owl-nav {
   text-align: center;
   width: 100%;
-
   span {
     font-size: 2em;
     padding: 0.5em 1em;
   }
 }
+
 /*********************
 Responsive section
 *********************/
+
 @media screen and (min-width: 768px) {
   .gameSearch-fields,
   .streamSearch-fields {
@@ -183,7 +205,6 @@ Responsive section
       display: inline-block;
       width: 80%;
     }
-
     .searchBtn {
       display: flex;
       flex-direction: column;
@@ -193,31 +214,41 @@ Responsive section
       width: 18.5%;
     }
   }
+<<<<<<< HEAD
 
   #stream-selection .single-user {
     width: 50%;
   }
 
+||||||| merged common ancestors
+
+=======
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
   .close-video {
     left: 90%;
   }
-
   .twitch-liveStream {
     height: 50vh;
   }
-
   .gameSelect,
   .streamerSelect {
     width: 48%;
     display: inline-block;
   }
 }
+
 @media screen and (min-width: 1030px) {
   .twitch-liveStream {
     height: 60vh;
   }
+<<<<<<< HEAD
 
   #stream-selection .single-user {
     width: 30%;
   }
 }
+||||||| merged common ancestors
+}
+=======
+}
+>>>>>>> 47e3463a4554a737b702b3f0cfa8aab5d9571f22
