@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   const storage = window.localStorage;
   let api = "https://api.twitch.tv/helix/";
   const id = "kzorunvk14ozf62rftb5a1d24qa73w";
@@ -89,8 +89,8 @@ $(function() {
         } // end of for...of loop
 
       }, // end of success function
-      complete: function() {
-        setTimeout(function() {
+      complete: function () {
+        setTimeout(function () {
           displayContent();
           localStorage.streamPeople = JSON.stringify(streamerData);
         }, 1200);
@@ -173,7 +173,7 @@ $(function() {
   }
 
   //This will find the correct target since the element doesnt exist when the DOM is created.
-  streamSelect.on('click', '.single-stream', function() {
+  streamSelect.on('click', '.single-stream', function () {
     let ID = $(this).find('h3').attr('id');
     let name = getUserNameFromId(ID);
     let vidSpot = $(`<div id="live-stream" class="streamNum-${vidCount} twitch-liveStream"></div>`);
@@ -201,13 +201,13 @@ $(function() {
   }
 
   // Removing videos
-  twitchEmbed.on("click", ".close-video", function() {
+  twitchEmbed.on("click", ".close-video", function () {
     let parentVideo = $(this).parent();
     parentVideo.remove();
   });
 
   // Btn to show game search field
-  $("#showGameFields").on('click', function() {
+  $("#showGameFields").on('click', function () {
     streamerField.hide();
     gameField.fadeToggle(600);
   });
@@ -281,17 +281,24 @@ $(function() {
       </p>
       </div>
       `);
-      streamSelect.append(content);
+    streamSelect.append(content);
   }
 
 
-  $("#showStreamerFields").on('click', function() {
+  $("#showStreamerFields").on('click', function () {
     gameField.hide();
     streamerField.fadeToggle(600);
   });
 
-  /*TODO: Fix the layout of this app. Add a search based on a streamer's name to find what
-  they're playing etc... Add a way to view multiple streams in a responsive grid layout.
-  Beginning to program the streamer search functionality.
+  /*
+  TODO: Fix the layout of this app. 
+  Add a way to view multiple streams in a responsive grid layout.
+  When a user is clicked, implement the video embed function used on the game search.
+  Add functionality to streamer select to display their livestream if their preview is clicked on.
+  Bug testing: 
+  1. Make sure mulitple requests cannot be spammed while loading results
+  2. Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.
+  3. When displaying the video make sure theres a default or error message if for some reason the video cannot be loaded.
+  4. Handle unrecognized names / incorrect game titles and return an error describing the problem to the user.
   */
 });
