@@ -52,8 +52,10 @@ $(function () {
       data: 'JSON',
       beforeSend: xhr => xhr.setRequestHeader('Client-ID', id),
       success: response => {
-        console.log(response);
-        if (response.data.length === 0) return alert("Invalid game title, please try your search again."); gameBtn.html('Search');
+        if (response.data.length === 0) {
+          gameBtn.html('Search');
+          alert("Invalid game title, please try your search again.");
+        }
         gameId = response.data[0].id;
         getStreams(gameId, term);
       },
@@ -327,9 +329,10 @@ $(function () {
   When a user is clicked, implement the video embed function used on the game search. - Added
 
   Bug testing: 
-  1. Make sure mulitple requests cannot be spammed while loading results
+  1. Make sure mulitple requests cannot be spammed while loading results for game search - Implemented
   2. Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.
   3. When displaying the video make sure theres a default or error message if for some reason the video cannot be loaded.
   4. Handle unrecognized names / incorrect game titles and return an error describing the problem to the user.
+  5. Make sure mulitple requests cannot be spammed while loading results for user search
   */
 });
