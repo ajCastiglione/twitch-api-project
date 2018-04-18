@@ -31,6 +31,7 @@ Fix the layout of this app:
   <li>When a user is clicked, implement the video embed function used on the game search.</li>
   <li>Add functionality to streamer select to display their livestream if their preview is clicked on.</li>
 </ol>
+
   Bug testing: 
 
 <ol>
