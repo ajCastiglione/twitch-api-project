@@ -96,9 +96,9 @@ output section
   align-items: stretch;
   justify-content: space-between;
 
-  .single-stream {
+  .single-stream, .single-user {
     display: inline-block;
-    width: 80%;
+    width: 100%;
     margin: 1em auto;
     padding: 1em;
     background-color: rgba(217, 142, 229, 0.5);
@@ -107,7 +107,7 @@ output section
     cursor: pointer;
   }
 
-  .single-stream-title {
+  .single-stream-title, .single-user-title {
     color: $purp;
   }
 
@@ -116,6 +116,12 @@ output section
     height: auto;
     margin: auto;
   }
+
+   .user-thumbnail {
+     width: 150px;
+     height: auto;
+     margin: auto;
+   }
 
   .search-term {
     text-transform: capitalize;
@@ -188,6 +194,10 @@ Responsive section
     }
   }
 
+  #stream-selection .single-user {
+    width: 50%;
+  }
+
   .close-video {
     left: 90%;
   }
@@ -205,5 +215,9 @@ Responsive section
 @media screen and (min-width: 1030px) {
   .twitch-liveStream {
     height: 60vh;
+  }
+
+  #stream-selection .single-user {
+    width: 30%;
   }
 }

@@ -20,12 +20,14 @@ $(function() {
   //initializing the search query
   gameBtn.on('click', evt => {
     evt.preventDefault();
+    streamerData = [];
     if (searchTerm.val() == "") return alert('You must enter a video game name.');
     gameBtn.html('Loading...');
     getGameId();
   });
   searchTerm.on('keypress', evt => {
     let keyCode = evt.which || evt.keyCode;
+    streamerData = [];
     if (keyCode === 13) {
       if (searchTerm.val() == "") return alert('You must enter a video game name.');
       gameBtn.html('Loading...');
@@ -271,14 +273,15 @@ $(function() {
   function displayUserContent() {
     userBtn.html("Search");
     streamSelect.empty();
+    slider.owlCarousel('destroy');
     let user = userData[0];
     let content = $(`
-      <div class="single-stream">
-      <img class="stream-thumbnail" src="${user.image}">
-      <p class="single-stream-content">
-      <h3 class="single-stream-title">${user.name}</h3>
-      is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
-      </p>
+      <div class="single-user">
+        <img class="user-thumbnail" src="${user.image}">
+        <div class="single-user-content">
+        <h3 class="single-user-title">${user.name}</h3>
+        is playing <span class="search-term">${user.game}</span> for ${user.views} viewers.
+        </div>
       </div>
       `);
       streamSelect.append(content);
