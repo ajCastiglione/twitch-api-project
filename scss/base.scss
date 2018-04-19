@@ -46,7 +46,7 @@ input section
   &:active,
   &:focus,
   &:hover {
-    background: transparent;
+    background: $white;
     color: $purp;
     text-decoration: none;
   }
@@ -75,7 +75,7 @@ input section
     &:active,
     &:hover {
       text-decoration: none;
-      background-color: transparent;
+      background-color: $white;
       color: $purp;
     }
   }
@@ -98,6 +98,7 @@ output section
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-between;
+
   
   .single-stream,
   .single-user-stream {
@@ -125,6 +126,20 @@ output section
   p {
     margin-bottom: 0;
   }
+}
+
+.larger-container {
+  width: 90%;
+  padding: 0 5%;
+  margin: auto;
+}
+
+
+#twitch-embed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .twitch-liveStream {
@@ -191,6 +206,9 @@ Responsive section
   .close-video {
     left: 90%;
   }
+  .larger-container {
+    width: 80%;
+  }
   .twitch-liveStream {
     height: 50vh;
   }
@@ -214,6 +232,9 @@ Responsive section
 @media screen and (min-width: 1030px) {
   #stream-selection .single-user-stream {
     width: 40%;
+  }
+  .larger-container {
+    width: 75%;
   }
   .twitch-liveStream {
     height: 60vh;
