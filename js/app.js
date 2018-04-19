@@ -333,14 +333,13 @@ $(function () {
   /*
   TODO: 
   Fix the layout of this app. 
-  Add a way to view multiple streams in a responsive grid layout.
+  Add a way to view multiple streams in a responsive grid layout. - Added
   When a user is clicked, implement the video embed function used on the game search. - Added
 
   Bug testing: 
   1. Make sure mulitple requests cannot be spammed while loading results for game search - Implemented
   2. Ensure there is error handling if an ajax request fails to pull data from the api for both game and streamer search functions.
   3. When displaying the video make sure theres a default or error message if for some reason the video cannot be loaded.
-  4. Handle unrecognized names / incorrect game titles and return an error describing the problem to the user.
-  5. Make sure mulitple requests cannot be spammed while loading results for user search
+  4. Handle unrecognized names / incorrect game titles and return an error describing the problem to the user. - Handles incorrect game names
   */
 });
