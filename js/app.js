@@ -205,7 +205,7 @@ $(function () {
         channel: userName
       }); //end twitch embed
       vidCount++;
-      if( $(".twitch-liveStream").hasClass('streamNum-1') ) {
+      if( $(".twitch-liveStream").hasClass('streamNum-1') && $(window).width() > 768) {
         $('.twitch-liveStream').css({'display': 'inline-block', 'width' : '47%', 'margin' : '1%'});
       } 
     }); //end of then function
